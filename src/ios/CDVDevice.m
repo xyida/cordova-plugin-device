@@ -73,6 +73,49 @@
     return app_uuid;
 }
 
+- (NSString*)getIDFA
+{
+    SEL advertisingIdentifierSel = sel_registerName("advertisingIdentifier");
+    SEL UUIDStringSel = sel_registerName("UUIDString");
+    
+    ASIdentifierManager *manager = [ASIdentifierManager sharedManager];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    if([manager respondsToSelector:advertisingIdentifierSel]) {
+        
+        id UUID = [manager performSelector:advertisingIdentifierSel];
+        
+        if([UUID respondsToSelector:UUIDStringSel]) {
+            
+            return [UUID performSelector:UUIDStringSel];
+            
+        }
+        
+    }
+#pragma clang diagnostic pop
+    return nil;
+}
+
+//获取 bundle version版本号
+- (NSString*) getLocalAppVersion
+{
+    return [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+}
+
+//获取BundleID
+- (NSString*) getBundleID
+{
+    return [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleIdentifier"];
+}
+
+//获取app的名字
+- (NSString*) getAppName
+{
+    NSString *appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+    NSMutableString *mutableAppName = [NSMutableString stringWithString:appName];
+    return mutableAppName;
+}
+
 - (void)getDeviceInfo:(CDVInvokedUrlCommand*)command
 {
     NSDictionary* deviceProperties = [self deviceProperties];
@@ -92,7 +135,11 @@
              @"version": [device systemVersion],
              @"uuid": [self uniqueAppInstanceIdentifier:device],
              @"cordova": [[self class] cordovaVersion],
-             @"isVirtual": @([self isVirtual])
+             @"isVirtual": @([self isVirtual]),
+			 @"idfa":[self getIDFA],
+             @"bundleId":[self getBundleID],
+             @"bundleVersion":[self getLocalAppVersion],
+             @"appName":[self getAppName]
              };
 }
 

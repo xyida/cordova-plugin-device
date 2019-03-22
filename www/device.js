@@ -44,6 +44,11 @@ function Device () {
     this.manufacturer = null;
     this.isVirtual = null;
     this.serial = null;
+    this.idfa = null;
+    this.bundleId = null;
+    this.bundleVersion = null;
+    this.appName = null;
+
 
     var me = this;
 
@@ -56,6 +61,10 @@ function Device () {
             me.platform = info.platform;
             me.version = info.version;
             me.uuid = info.uuid;
+            me.idfa = info.idfa;
+            me.bundleId = info.bundleId;
+            me.bundleVersion = info.bundleVersion;
+            me.appName = info.appName;
             me.cordova = buildLabel;
             me.model = info.model;
             me.isVirtual = info.isVirtual;
