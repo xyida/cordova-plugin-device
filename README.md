@@ -51,6 +51,10 @@ function onDeviceReady() {
 - device.manufacturer
 - device.isVirtual
 - device.serial
+- device.idfa(ios only)
+- device.appName(ios only)
+- device.bundleId(ios only)
+- device.bundleVersion(ios only)
 
 ## device.cordova
 
